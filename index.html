@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Brother OS — Mr JD</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #050505;
+    color: #e8e8e8;
+    font-family: monospace;
+    overflow-x: hidden;
+}
+
+#boot {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    padding: 25px;
+}
+
+.boot-box {
+    width: min(650px, 100%);
+    color: #00ff88;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.cursor {
+    animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+#app {
+    display: none;
+    min-height: 100vh;
+}
+
+header {
+    padding: 25px;
+    border-bottom: 1px solid #222;
+    background: #080808;
+}
+
+.logo {
+    color: #00ff88;
+    font-size: 18px;
+}
+
+.status {
+    color: #777;
+    margin-top: 8px;
+    font-size: 12px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px 20px;
+}
+
+.hero {
+    padding: 35px 0;
+}
+
+.hero h1 {
+    font-size: clamp(35px, 8vw, 70px);
+    margin: 0;
+}
+
+.green {
+    color: #00ff88;
+}
+
+.subtitle {
+    color: #777;
+    margin-top: 12px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 25px 0;
+}
+
+.stat {
+    border: 1px solid #222;
+    padding: 20px;
+    background: #0a0a0a;
+}
+
+.stat-number {
+    font-size: 25px;
+    color: #00ff88;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    padding: 25px;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.card:hover {
+    border-color: #00ff88;
+    transform: translateY(-3px);
+}
+
+.icon {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.card h3 {
+    margin: 0 0 8px;
+}
+
+.card p {
+    color: #777;
+    font-size: 13px;
+}
+
+.section {
+    display: none;
+    margin-top: 30px;
+    padding: 30px;
+    background: #090909;
+    border: 1px solid #222;
+}
+
+.section.active {
+    display: block;
+}
+
+.back {
+    color: #00ff88;
+    cursor: pointer;
+    margin-bottom: 25px;
+}
+
+.memory {
+    border-left: 2px solid #00ff88;
+    padding: 15px 20px;
+    margin: 18px 0;
+    background: #0d0d0d;
+}
+
+.memory h3 {
+    margin-top: 0;
+}
+
+.memory p {
+    color: #aaa;
+    line-height: 1.7;
+}
+
+.secret {
+    color: #00ff88;
+    line-height: 1.8;
+}
+
+footer {
+    text-align: center;
+    color: #444;
+    padding: 60px 20px;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BOOT SCREEN -->
+
+<div id="boot">
+    <div class="boot-box" id="bootText"></div>
+</div>
+
+<!-- MAIN APP -->
+
+<div id="app">
+
+<header>
+    <div class="logo">BROTHER_OS // v1.0</div>
+    <div class="status">
+        USER: MR JD | ADMIN: VAISHU | SYSTEM AGE: 16+ YEARS
+    </div>
+</header>
+
+<div class="container">
+
+<section class="hero">
+    <div class="green">ACCESS GRANTED</div>
+
+    <h1>MR JD</h1>
+
+    <p class="subtitle">
+        Unfortunately, you're still my brother.
+    </p>
+</section>
+
+<div class="stats">
+
+    <div class="stat">
+        <span class="stat-number">16+</span>
+        Years of system uptime
+    </div>
+
+    <div class="stat">
+        <span class="stat-number">∞</span>
+        Arguments
+    </div>
+
+    <div class="stat">
+        <span class="stat-number">∞</span>
+        Inside jokes
+    </div>
+
+    <div class="stat">
+        <span class="stat-number">100%</span>
+        Permanent brother
+    </div>
+
+</div>
+
+<div class="grid">
+
+    <div class="card" onclick="openSection('memories')">
+        <div class="icon">📁</div>
+        <h3>MEMORY_DATABASE</h3>
+        <p>Retrieving questionable childhood decisions...</p>
+    </div>
+
+    <div class="card" onclick="openSection('evidence')">
+        <div class="icon">⚠️</div>
+        <h3>EVIDENCE_ROOM</h3>
+        <p>Classified records of brotherly nonsense.</p>
+    </div>
+
+    <div class="card" onclick="openSection('classified')">
+        <div class="icon">🔐</div>
+        <h3>CLASSIFIED</h3>
+        <p>Things Vaishu doesn't usually say out loud.</p>
+    </div>
+
+    <div class="card" onclick="openSection('future')">
+        <div class="icon">📨</div>
+        <h3>FUTURE_MESSAGES</h3>
+        <p>Messages from 2026 to the future.</p>
+    </div>
+
+</div>
+
+
+<!-- MEMORIES -->
+
+<div id="memories" class="section">
+
+<div class="back" onclick="closeSections()">← SYSTEM HOME</div>
+
+<h2>MEMORY_DATABASE</h2>
+
+<div class="memory">
+<h3>01 // The Beginning</h3>
+<p>
+Apparently you were already causing chaos from day one.
+You jumped on me when I was born.
+Excellent first impression, Mr JD.
+</p>
+</div>
+
+<div class="memory">
+<h3>02 // The Bed Incident</h3>
+<p>
+There was a phase where throwing Vaishu off the bed
+was apparently considered completely reasonable behaviour.
+Childhood logic was something else.
+</p>
+</div>
+
+<div class="memory">
+<h3>03 // The Mud Experiment</h3>
+<p>
+Somehow mud ended up in my eyes.
+I would like to formally state that I did not approve
+this scientific experiment.
+</p>
+</div>
+
+<div class="memory">
+<h3>04 // The Pencil Incident</h3>
+<p>
+You weren't the only one committing crimes against
+peace and quiet.
+Vaishu had a pencil.
+Vaishu had determination.
+The rest is classified.
+</p>
+</div>
+
+<div class="memory">
+<h3>05 // Sixteen Plus Years</h3>
+<p>
+We've gone from childhood nonsense to fights,
+sarcasm, random conversations, deep talks,
+and telling each other things we don't tell everyone.
+That's probably the part that matters most.
+</p>
+</div>
+
+</div>
+
+
+<!-- EVIDENCE -->
+
+<div id="evidence" class="section">
+
+<div class="back" onclick="closeSections()">← SYSTEM HOME</div>
+
+<h2>EVIDENCE_ROOM</h2>
+
+<div class="memory">
+<h3>CASE #001</h3>
+<p>
+Subject: Mr JD<br>
+Charge: Excessive brother behaviour<br>
+Verdict: Guilty<br>
+Sentence: Remain Vaishu's brother permanently.
+</p>
+</div>
+
+<div class="memory">
+<h3>CASE #002</h3>
+<p>
+Subject: Vaishu<br>
+Charge: Pencil-related retaliation<br>
+Verdict: Also guilty.
+</p>
+</div>
+
+<div class="memory">
+<h3>CASE #003</h3>
+<p>
+Subject: Both parties<br>
+Charge: Being impossible to explain to normal people.
+</p>
+</div>
+
+<p class="green">
+Additional evidence can be added here later.
+</p>
+
+</div>
+
+
+<!-- CLASSIFIED -->
+
+<div id="classified" class="section">
+
+<div class="back" onclick="closeSections()">← SYSTEM HOME</div>
+
+<h2>CLASSIFIED // VAISHU → JD</h2>
+
+<p class="secret">
+
+Okay, serious mode for approximately 30 seconds.
+
+We've fought.
+We've annoyed each other.
+We've made fun of each other.
+We've probably driven each other insane more times
+than either of us would like to admit.
+
+But you're also one of the people I've been able to
+share things with, talk deeply with, and learn from.
+
+You've been around for basically my entire life.
+
+And that's something I don't take for granted.
+
+You taught me things.
+You looked out for me in your own way.
+And even when our conversations are 90% sarcasm,
+I know there is something much deeper underneath it.
+
+So yeah.
+
+You're annoying.
+
+But you're my annoying brother.
+
+And I wouldn't replace you.
+
+</p>
+
+</div>
+
+
+<!-- FUTURE -->
+
+<div id="future" class="section">
+
+<div class="back" onclick="closeSections()">← SYSTEM HOME</div>
+
+<h2>FUTURE_MESSAGES</h2>
+
+<div class="memory">
+<h3>🔒 OPEN IN THE FUTURE</h3>
+
+<p>
+This section is intentionally unfinished.
+
+Because there are still years of memories
+we haven't created yet.
+</p>
+
+<p>
+Add photos, videos, messages and letters here
+throughout the years.
+</p>
+
+<p class="green">
+BROTHER_OS IS STILL UNDER DEVELOPMENT.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+BROTHER_OS v1.0<br>
+Built by Vaishu<br><br>
+SYSTEM STATUS: PERMANENTLY CONNECTED
+</footer>
+
+</div>
+
+
+<script>
+
+const lines = [
+    "INITIALIZING BROTHER_OS...",
+    "Scanning childhood memories... ✓",
+    "Loading embarrassing evidence... ✓",
+    "Loading unresolved arguments... 847 found",
+    "Loading secrets... ENCRYPTED",
+    "Checking brother status...",
+    "RESULT: STILL ANNOYING.",
+    "Checking relationship status...",
+    "RESULT: PERMANENT.",
+    "",
+    "ACCESS GRANTED."
+];
+
+let i = 0;
+let text = "";
+
+function boot() {
+
+    if (i < lines.length) {
+
+        text += lines[i] + "<br>";
+        document.getElementById("bootText").innerHTML =
+            text + '<span class="cursor">█</span>';
+
+        i++;
+
+        setTimeout(boot, 450);
+
+    } else {
+
+        setTimeout(() => {
+
+            document.getElementById("boot").style.display = "none";
+            document.getElementById("app").style.display = "block";
+
+        }, 1000);
+    }
+}
+
+function openSection(id) {
+
+    document.querySelectorAll(".section")
+        .forEach(section => section.classList.remove("active"));
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    window.scrollTo({
+        top: document.getElementById(id).offsetTop - 20,
+        behavior: "smooth"
+    });
+}
+
+function closeSections() {
+
+    document.querySelectorAll(".section")
+        .forEach(section => section.classList.remove("active"));
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+boot();
+
+</script>
+
+</body>
+  </html>
